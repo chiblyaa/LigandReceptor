@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-# LigandReceptor
+# LigandReceptor v 1.0.0
 
 <!-- badges: start -->
 <!-- badges: end -->
