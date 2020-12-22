@@ -1,0 +1,66 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# LigandReceptor
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of LigandReceptor is to simplify the process of identifying potential ligand-receptor pairs in scRNAseq data
+
+## Installation
+
+You can install LigandReceptor from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("chiblyaa/LigandReceptor")
+```
+## Example
+
+To use this function, first obtain a list of genes expressed in a scRNAseq dataset using the SEURAT function FindAllMarkers():
+
+```{r example}
+## basic example code
+library(Seurat)
+library(LigandReceptor)
+
+seuratDEGS <- LigandReceptor::test_dataset #test_dataset obtained using FindAllMarkers from SEURAT
+ncells = 23 #number of unique cell identities in SEURAT object
+celltypelabels = as.vector(unique(test_dataset$cluster)) # create vector of cell identities
+colors = topo.colors(ncells) # create vector of colors of length = ncells
+LRdatabase <- LigandReceptor::LRdatabase # Load ligand-receptor pair reference database
+
+## This will generate a table with ligand-receptor pair for the specified cell types in celltypelabels
+LR.pairs <- LigandReceptorPairsTable(ncells, celltypelabels, seuratDEGS, LRdatabase)
+
+# This will generate the chord plot associated with the table
+#PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, LRdatabase, subsetgenes, from = celltypelabels, to = celltypelabels)
+
+```
+
+The generated table looks like this:
+
+```{r table}
+head(LR.pairs, 10)
+```
+
+The corresponding plot would look like this:
+
+```{r plot, echo = FALSE}
+### TBD
+```
+
+

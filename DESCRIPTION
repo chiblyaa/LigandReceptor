@@ -9,6 +9,8 @@ Authors@R:
 Description: Package creates a table of ligand-receptor pairs for all cell populations in 
           a single-cell RNAseq experiment. It uses as input a table of cell markers generated with 
           the FindAllMarkers function from SEURAT. A chord plot can be generated using the circlize package.
+Depends: 
+    R (>= 2.10)
 Imports:
     circlize,
     dplyr,
