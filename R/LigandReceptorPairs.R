@@ -114,7 +114,7 @@ LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatab
 #' @param from vector of cell type names to subset outgoing interactions. Default is all cells.
 #' @param to vector of cell type names to subset incoming interactions. Default is all cells.
 #' @export
-PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, LRdatabase, subsetgenes, from = celltypelabels, to = celltypelabels){
+PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, LRdatabase, subsetgenes=seuratDEGS$gene, from = celltypelabels, to = celltypelabels){
   #ncells: number of distinct cell types in SEURAT object
   #seuratDEGs: direct output from the SEURAT "FindAllMarkers()" function
   #LRdatabase: Table of ligands and receptor pairs. Must have 5 colums in this order: 'Pair', "Ligand", "Ligand.name", "Receptor" and "Receptor.name"
@@ -162,15 +162,12 @@ PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, 
 
   melted<- reshape2::melt(data = number.of.pairs, varnames = c("from", "to")) #use melt function from reshape2 library to create a table from matrix
 
-
-  grDevices::pdf(file = filename ,width = 3,height = 3, useDingbats = F)
   circlize::circos.par(gap.degree=5, gap.after=5)
   circlize::chordDiagram(melted[melted$from %in% from & melted$to %in% to, ], grid.col = cellcolors, link.lwd = 1, link.lty = 1, link.border = "black",
                symmetric = F, directional = 1, direction.type = c("diffHeight", "arrows"), link.arr.width = 0.1,
                link.arr.length = 0.1, link.arr.type = "big.arrow",
                annotationTrack = c("grid"), link.largest.ontop = T, link.arr.lty = 1,grid.border = 1)
   circlize::circos.clear()
-  grDevices::dev.off()
 
 }
 
