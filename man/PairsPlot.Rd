@@ -15,7 +15,7 @@ PairsPlot(
   cellcolors,
   seuratDEGS,
   LRdatabase,
-  subsetgenes,
+  subsetgenes = seuratDEGS$gene,
   from = celltypelabels,
   to = celltypelabels
 )

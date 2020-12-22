@@ -114,7 +114,7 @@ LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatab
 #' @param from vector of cell type names to subset outgoing interactions. Default is all cells.
 #' @param to vector of cell type names to subset incoming interactions. Default is all cells.
 #' @export
-PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, LRdatabase, subsetgenes, from = celltypelabels, to = celltypelabels){
+PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, LRdatabase, subsetgenes=seuratDEGS$gene, from = celltypelabels, to = celltypelabels){
   #ncells: number of distinct cell types in SEURAT object
   #seuratDEGs: direct output from the SEURAT "FindAllMarkers()" function
   #LRdatabase: Table of ligands and receptor pairs. Must have 5 colums in this order: 'Pair', "Ligand", "Ligand.name", "Receptor" and "Receptor.name"
