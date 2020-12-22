@@ -12,7 +12,7 @@ LigandReceptorPairsTable(
   celltypelabels,
   seuratDEGS,
   LRdatabase,
-  subsetgenes
+  subsetgenes = seuratDEGS$gene
 )
 }
 \arguments{
