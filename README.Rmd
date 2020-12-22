@@ -47,20 +47,16 @@ LRdatabase <- LigandReceptor::LRdatabase # Load ligand-receptor pair reference d
 LR.pairs <- LigandReceptorPairsTable(ncells, celltypelabels, seuratDEGS, LRdatabase)
 
 # This will generate the chord plot associated with the table
-#PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, LRdatabase, subsetgenes, from = celltypelabels, to = celltypelabels)
+PairsPlot("filename.pdf", ncells, celltypelabels, cellcolors=colors, seuratDEGS, LRdatabase, from = "Myoepithelial")
 
 ```
 
 The generated table looks like this:
 
 ```{r table}
-head(LR.pairs, 10)
+head(LR.pairs[LR.pairs$from %in% "Myoepithelial", ])
 ```
 
-The corresponding plot would look like this:
 
-```{r plot, echo = FALSE}
-### TBD
-```
 
 

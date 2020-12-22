@@ -34,35 +34,27 @@ LRdatabase <- LigandReceptor::LRdatabase # Load ligand-receptor pair reference d
 LR.pairs <- LigandReceptorPairsTable(ncells, celltypelabels, seuratDEGS, LRdatabase)
 
 # This will generate the chord plot associated with the table
-#PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, LRdatabase, subsetgenes, from = celltypelabels, to = celltypelabels)
+PairsPlot("filename.pdf", ncells, celltypelabels, cellcolors=colors, seuratDEGS, LRdatabase, from = "Myoepithelial")
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />
 
 The generated table looks like this:
 
 ``` r
-head(LR.pairs, 10)
-#>                 from      to value
-#> 1            End bud End bud     1
-#> 2        Krt19+ duct End bud     7
-#> 3         Basal duct End bud     0
-#> 4      Myoepithelial End bud     2
-#> 5  Bpifa2+ Proacinar End bud     6
-#> 6    Smgc+ Proacinar End bud     0
-#> 7      Mitotic cells End bud     1
-#> 8      Serous acinar End bud     5
-#> 9  Seromucous acinar End bud     5
-#> 10         Gstt1+ ID End bud     4
-#>                                                                                     pairs
-#> 1                                                                             Calm2_pde1c
-#> 2  Tnc_sdc4, Lamc2_itgb4, Lamb3_itgb4, Lama5_itgb4, Hsp90aa1_cftr, Hbegf_cd9, Calm2_pde1c
-#> 3                                                                                        
-#> 4                                                              Hsp90b1_asgr1, Calm1_pde1c
-#> 5            Tgm2_sdc4, Sema6a_plxna4, Lamc1_itgb4, Lamb1_itgb4, Cxcl12_sdc4, Calm1_pde1c
-#> 6                                                                                    <NA>
-#> 7                                                                             Calm2_pde1c
-#> 8                            Spint1_st14, Hsp90aa1_cftr, Hp_asgr1, Hbegf_cd9, Calm2_pde1c
-#> 9                        Lamc1_itgb4, Hsp90b1_asgr1, Hbegf_cd9, Dusp18_itgb4, Calm3_pde1c
-#> 10                                      Spint1_st14, Hsp90aa1_cftr, Hp_asgr1, Calm1_pde1c
+head(LR.pairs[LR.pairs$from %in% "Myoepithelial", ])
+#>              from                to value
+#> 4   Myoepithelial           End bud     2
+#> 27  Myoepithelial       Krt19+ duct     1
+#> 50  Myoepithelial        Basal duct     1
+#> 73  Myoepithelial     Myoepithelial     3
+#> 96  Myoepithelial Bpifa2+ Proacinar     9
+#> 119 Myoepithelial   Smgc+ Proacinar     0
+#>                                                                                                             pairs
+#> 4                                                                                      Hsp90b1_asgr1, Calm1_pde1c
+#> 27                                                                                                     Cdh1_ptprf
+#> 50                                                                                                    Calm1_kcnn4
+#> 73                                                                            Cdh1_ptprf, Calm1_hmmr, Calm1_kcnn4
+#> 96  Sema3b_nrp2, Sema3b_nrp1, Mllt4_f11r, Hras_cav1, Hmgb1_thbd, Cdh1_ptprm, Calr_scarf1, Calm1_abca1, Anxa1_dysf
+#> 119
 ```
-
-The corresponding plot would look like this:
