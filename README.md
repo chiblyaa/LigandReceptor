@@ -4,7 +4,7 @@
 
 <!-- badges: start -->
 <!-- badges: end -->
-The goal of LigandReceptor is to simplify the process of identifying potential ligand-receptor pairs in scRNAseq data
+The goal of LigandReceptor is to simplify the process of identifying potential ligand-receptor pairs in scRNAseq data. A database of ligand-receptor pairs was obtained from https://doi.org/10.1038/ncomms8866 (Ramilowski, J., Goldberg, T., Harshbarger, J. et al. A draft network of ligand–receptor-mediated multicellular signalling in human. Nat Commun 6, 7866 (2015))
 
 ## Installation
 
