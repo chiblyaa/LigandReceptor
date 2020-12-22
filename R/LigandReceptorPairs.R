@@ -9,7 +9,7 @@
 #' @param LRdatabase Table of ligand-receptor pairs
 #' @param subsetgenes Vector containing a subset of genes
 #' @export
-LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatabase, subsetgenes){
+LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatabase, subsetgenes = seuratDEGS$gene){
   #ncells: number of distinct cell types in SEURAT object
   #seuratDEGs: direct output from the SEURAT "FindAllMarkers()" function
   #LRdatabase: Table of ligands and receptor pairs. Must have 5 colums in this order: 'Pair', "Ligand", "Ligand.name", "Receptor" and "Receptor.name"
