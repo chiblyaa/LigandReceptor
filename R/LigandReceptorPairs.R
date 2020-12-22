@@ -1,9 +1,8 @@
-#' Create table with ligand-receptor pairs between cells
+#' Create table with ligand-receptor pairs between cells.
 #' This function combines gene expression output data from SEURAT with
 #' a database of Ligand-Receptor pairs to identify potential
 #' cell-cell interactions in a given dataset.
-#'
-#' @importFrom
+#' @import dplyr circlize reshape2
 #' @param ncells Number of cell types in annotated seurat object
 #' @param celltypelabels Vector containing labels for ncells
 #' @param seuratDEGS Exact output from Seurat::FindAllMarkers function. Must contain a 'gene' column
@@ -17,10 +16,8 @@ LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatab
   #subsetgenes: subset of genes to create ligand-receptor pairs matix with
 
   # create a matrix with the fold change values from SEURAT output using reshape library
-  require(reshape2)
-  require(dplyr)
 
-  foldchanges <- dcast(seuratDEGS,formula = gene~cluster,fun.aggregate = sum,value.var = "avg_logFC") #this function creates the matrix
+  foldchanges <- reshape2::dcast(seuratDEGS,formula = gene~cluster,fun.aggregate = sum,value.var = "avg_logFC") #this function creates the matrix
   FC.receptors <- merge(foldchanges, LRdatabase, by.x = "gene", by.y = "Receptor") #combine with ligand receptor database to create matrix of receptors
 
   potential.Pairs <- merge(FC.receptors,foldchanges, by.x = "Ligand", by.y = "gene", no.dups = F) # add ligand information to matrix to identify pairs
@@ -58,7 +55,7 @@ LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatab
   rownames(number.of.pairs) <- celltypelabels # fix colnames to remove ".x /.y"
 
 
-  melted<- melt(data = number.of.pairs, varnames = c("from", "to")) #use melt function from reshape2 library to create a table from matrix
+  melted<- reshape2::melt(data = number.of.pairs, varnames = c("from", "to")) #use melt function from reshape2 library to create a table from matrix
 
 
   ### Add ligand-receptor pair labels to melted table:
@@ -106,6 +103,7 @@ LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatab
 #' cell-cell interactions in a given dataset and uses the circlize package
 #' to produce a chord plot representative of those interactions
 #'
+#' @import dplyr circlize reshape2
 #' @param filename Name in quotes to export plot in pdf format
 #' @param ncells Number of cell types in annotated seurat object
 #' @param celltypelabels Vector containing labels for ncells
@@ -123,11 +121,8 @@ PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, 
   #subsetgenes: subset of genes to create ligand-receptor pairs matix with
 
   # create a matrix with the fold change values from SEURAT output using reshape library
-  require(reshape2)
-  require(dplyr)
-  require(circlize)
 
-  foldchanges <- dcast(seuratDEGS,formula = gene~cluster,fun.aggregate = sum,value.var = "avg_logFC") #this function creates the matrix
+  foldchanges <- reshape2::dcast(seuratDEGS,formula = gene~cluster,fun.aggregate = sum,value.var = "avg_logFC") #this function creates the matrix
   FC.receptors <- merge(foldchanges, LRdatabase, by.x = "gene", by.y = "Receptor") #combine with ligand receptor database to create matrix of receptors
 
   potential.Pairs <- merge(FC.receptors,foldchanges, by.x = "Ligand", by.y = "gene", no.dups = F) # add ligand information to matrix to identify pairs
@@ -165,17 +160,17 @@ PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, 
   rownames(number.of.pairs) <- celltypelabels # fix colnames to remove ".x /.y"
 
 
-  melted<- melt(data = number.of.pairs, varnames = c("from", "to")) #use melt function from reshape2 library to create a table from matrix
+  melted<- reshape2::melt(data = number.of.pairs, varnames = c("from", "to")) #use melt function from reshape2 library to create a table from matrix
 
 
-  pdf(file = filename ,width = 3,height = 3, useDingbats = F)
-  circos.par(gap.degree=5, gap.after=5)
-  chordDiagram(melted[melted$from %in% from & melted$to %in% to, ], grid.col = cellcolors, link.lwd = 1, link.lty = 1, link.border = "black",
+  grDevices::pdf(file = filename ,width = 3,height = 3, useDingbats = F)
+  circlize::circos.par(gap.degree=5, gap.after=5)
+  circlize::chordDiagram(melted[melted$from %in% from & melted$to %in% to, ], grid.col = cellcolors, link.lwd = 1, link.lty = 1, link.border = "black",
                symmetric = F, directional = 1, direction.type = c("diffHeight", "arrows"), link.arr.width = 0.1,
                link.arr.length = 0.1, link.arr.type = "big.arrow",
                annotationTrack = c("grid"), link.largest.ontop = T, link.arr.lty = 1,grid.border = 1)
-  circos.clear()
-  dev.off()
+  circlize::circos.clear()
+  grDevices::dev.off()
 
 }
 

@@ -1,13 +1,24 @@
 Package: LigandReceptor
-Title: What the Package Does (One Line, Title Case)
+Title: Predict Ligand-Receptor Pairs from scRNAseq data
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Alejandro",
+           family = "Chibly",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+           email = "alejandro.chibly@gmail.com")
+Description: Package creates a table of ligand-receptor pairs for all cell populations in 
+          a single-cell RNAseq experiment. It uses as input a table of cell markers generated with 
+          the FindAllMarkers function from SEURAT. A chord plot can be generated using the circlize package.
+Imports:
+    circlize,
+    dplyr,
+    reshape2
+Suggests:
+    knitr,
+    devtools,
+    roxygen2,
+    testthat
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.1.0
