@@ -24,4 +24,4 @@ LRdatabase <- data.frame(lapply(LRdatabase, function(x) {
   gsub("Ntf4", "Ntf5", x)
 }))
 "LRdatabase"
-usethis::use_data(LRdatabase)
+usethis::use_data(LRdatabase, overwrite = T)
