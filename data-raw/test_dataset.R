@@ -14,6 +14,6 @@
 #'   \item{gene}{Gene name}
 #' }
 #' @source \url{}
-test_dataset <- read.csv("~/Desktop/Test dataset.csv", row.names = 1)
+test_dataset <- read.csv("~/Test dataset.csv", row.names = 1)
 "test_dataset"
 usethis::use_data(test_dataset, overwrite = T)

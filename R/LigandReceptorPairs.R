@@ -9,14 +9,15 @@
 #' @param LRdatabase Table of ligand-receptor pairs
 #' @param subsetgenes Vector containing a subset of genes
 #' @export
-LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatabase, subsetgenes = seuratDEGS$gene){
-  #ncells: number of distinct cell types in SEURAT object
-  #seuratDEGs: direct output from the SEURAT "FindAllMarkers()" function
-  #LRdatabase: Table of ligands and receptor pairs. Must have 5 colums in this order: 'Pair', "Ligand", "Ligand.name", "Receptor" and "Receptor.name"
-  #subsetgenes: subset of genes to create ligand-receptor pairs matix with
+#'
+LigandReceptorPairsTable <- function(seuratDEGS, LRdatabase, subsetgenes = seuratDEGS$gene){
+
+  ncells <- length(unique(seuratDEGS$cluster)) #number of distinct cell types in SEURAT object
+  celltypelabels <- unique(seuratDEGS$cluster) #save names as vector of strings
+  #LRdatabase:Must have 5 colums in this order: 'Pair', "Ligand", "Ligand.name", "Receptor" and "Receptor.name"
+  #subsetgenes: subset of genes to create ligand-receptor pairs matix with. Must be a vector.
 
   # create a matrix with the fold change values from SEURAT output using reshape library
-
   foldchanges <- reshape2::dcast(seuratDEGS,formula = gene~cluster,fun.aggregate = sum,value.var = "avg_logFC") #this function creates the matrix
   FC.receptors <- merge(foldchanges, LRdatabase, by.x = "gene", by.y = "Receptor") #combine with ligand receptor database to create matrix of receptors
 
@@ -54,9 +55,7 @@ LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatab
   colnames(number.of.pairs) <-  celltypelabels # fix colnames to remove ".x /.y"
   rownames(number.of.pairs) <- celltypelabels # fix colnames to remove ".x /.y"
 
-
   melted<- reshape2::melt(data = number.of.pairs, varnames = c("from", "to")) #use melt function from reshape2 library to create a table from matrix
-
 
   ### Add ligand-receptor pair labels to melted table:
   melted$pairs <- NA #add a "pairs" column to add information to
@@ -114,20 +113,23 @@ LigandReceptorPairsTable <- function(ncells, celltypelabels, seuratDEGS, LRdatab
 #' @param from vector of cell type names to subset outgoing interactions. Default is all cells.
 #' @param to vector of cell type names to subset incoming interactions. Default is all cells.
 #' @export
-PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, LRdatabase, subsetgenes=seuratDEGS$gene, from = celltypelabels, to = celltypelabels){
+PairsPlot <- function(seuratDEGS, LRdatabase, cellcolors, subsetgenes=seuratDEGS$gene, from = celltypelabels, to = celltypelabels){
   #ncells: number of distinct cell types in SEURAT object
   #seuratDEGs: direct output from the SEURAT "FindAllMarkers()" function
   #LRdatabase: Table of ligands and receptor pairs. Must have 5 colums in this order: 'Pair', "Ligand", "Ligand.name", "Receptor" and "Receptor.name"
   #subsetgenes: subset of genes to create ligand-receptor pairs matix with
 
   # create a matrix with the fold change values from SEURAT output using reshape library
+  ncells <- length(unique(seuratDEGS$cluster)) #number of distinct cell types in SEURAT object
+  celltypelabels <- unique(seuratDEGS$cluster) #save names as vector of strings
+
+  if(length(cellcolors) == ncells){
 
   foldchanges <- reshape2::dcast(seuratDEGS,formula = gene~cluster,fun.aggregate = sum,value.var = "avg_logFC") #this function creates the matrix
   FC.receptors <- merge(foldchanges, LRdatabase, by.x = "gene", by.y = "Receptor") #combine with ligand receptor database to create matrix of receptors
 
   potential.Pairs <- merge(FC.receptors,foldchanges, by.x = "Ligand", by.y = "gene", no.dups = F) # add ligand information to matrix to identify pairs
   names(potential.Pairs)[2] <- "Receptor" # correct column name
-
 
   ## create subset of potential pairs with desired genes
   potential.Pairs <- potential.Pairs[potential.Pairs$Receptor %in% subsetgenes | potential.Pairs$Ligand %in% subsetgenes, ]
@@ -137,7 +139,6 @@ PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, 
                             nrow = ncells,
                             dimnames = list(colnames(potential.Pairs[3:(2+ncells)]),
                                             colnames(potential.Pairs[3:(2+ncells)])))
-
 
   # create matrix with number of potential pairs between cell types
   for (j in 1:ncells){
@@ -169,6 +170,10 @@ PairsPlot <- function(filename, ncells, celltypelabels, cellcolors, seuratDEGS, 
                annotationTrack = c("grid"), link.largest.ontop = T, link.arr.lty = 1,grid.border = 1)
   circlize::circos.clear()
 
+  }
+  else {
+    print("Number of colors does not mach number of cell types")
+  }
 }
 
 
