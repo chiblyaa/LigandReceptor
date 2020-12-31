@@ -30,32 +30,38 @@ devtools::install_github("chiblyaa/LigandReceptor")
 ```
 ## Example
 
-To use this function, first obtain a list of genes expressed in a scRNAseq dataset using the SEURAT function FindAllMarkers():
-
-```{r example}
-## basic example code
-library(Seurat)
-library(LigandReceptor)
-
-seuratDEGS <- LigandReceptor::test_dataset #test_dataset obtained using FindAllMarkers from SEURAT
-ncells = 23 #number of unique cell identities in SEURAT object
-celltypelabels = as.vector(unique(test_dataset$cluster)) # create vector of cell identities
-colors = topo.colors(ncells) # create vector of colors of length = ncells
+To use this function, first obtain a list of genes expressed in a scRNAseq dataset using the SEURAT function FindAllMarkers().
+An example of an acceptable table:
+```{r testdata, echo=FALSE, results='asis'}
+test_dataset <- LigandReceptor::test_dataset
+test_dataset <- test_dataset[test_dataset$cluster %in% c("Acinar", "Myoepithelial", "End bud", "Stromal", "Krt19+ duct",
+                                                         "Basal duct", "Macrophages"),]
+knitr::kable(test_dataset[1:5,], caption = "A test scRNAseq dataset:")
 LRdatabase <- LigandReceptor::LRdatabase # Load ligand-receptor pair reference database
+```
 
+Basic example code for generating a table with ligand-receptor pairs:
+```{r example}
+
+library(LigandReceptor)
 ## This will generate a table with ligand-receptor pair for the specified cell types in celltypelabels
-LR.pairs <- LigandReceptorPairsTable(ncells, celltypelabels, seuratDEGS, LRdatabase)
+LR.pairs <- LigandReceptorPairsTable(seuratDEGS = test_dataset, LRdatabase = LRdatabase)
+knitr::kable(LR.pairs[1:10,], caption = "Ligand-Receptor pairs: ")
+```
 
+Chord plot to represent ligands from Myoepithelial cells to all other cells:
+```{r plot}
 # This will generate the chord plot associated with the table
-PairsPlot("filename.pdf", ncells, celltypelabels, cellcolors=colors, seuratDEGS, LRdatabase, from = "Myoepithelial")
+colors = topo.colors(as.numeric(length(unique(test_dataset$cluster)))) # create vector of colors of length = ncells
+names(colors) <- as.character(unique(test_dataset$cluster))
 
+PairsPlot(cellcolors=colors, seuratDEGS = test_dataset, LRdatabase)
+legend("bottomright",   # location of legend
+      legend = names(colors), # categories or elements to render in
+			 # the legend
+      fill = colors) 
 ```
 
-The generated table looks like this:
-
-```{r table}
-head(LR.pairs[LR.pairs$from %in% "Myoepithelial", ])
-```
 
 
 
