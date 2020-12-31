@@ -3,8 +3,6 @@
 #' a database of Ligand-Receptor pairs to identify potential
 #' cell-cell interactions in a given dataset.
 #' @import dplyr circlize reshape2
-#' @param ncells Number of cell types in annotated seurat object
-#' @param celltypelabels Vector containing labels for ncells
 #' @param seuratDEGS Exact output from Seurat::FindAllMarkers function. Must contain a 'gene' column
 #' @param LRdatabase Table of ligand-receptor pairs
 #' @param subsetgenes Vector containing a subset of genes
@@ -12,8 +10,8 @@
 #'
 LigandReceptorPairsTable <- function(seuratDEGS, LRdatabase, subsetgenes = seuratDEGS$gene){
 
-  ncells <- length(unique(seuratDEGS$cluster)) #number of distinct cell types in SEURAT object
-  celltypelabels <- unique(seuratDEGS$cluster) #save names as vector of strings
+  ncells <- as.numeric(length(unique(seuratDEGS$cluster))) #number of distinct cell types in SEURAT object
+  celltypelabels <- as.character(unique(seuratDEGS$cluster)) #save names as vector of strings
   #LRdatabase:Must have 5 colums in this order: 'Pair', "Ligand", "Ligand.name", "Receptor" and "Receptor.name"
   #subsetgenes: subset of genes to create ligand-receptor pairs matix with. Must be a vector.
 
@@ -103,9 +101,6 @@ LigandReceptorPairsTable <- function(seuratDEGS, LRdatabase, subsetgenes = seura
 #' to produce a chord plot representative of those interactions
 #'
 #' @import dplyr circlize reshape2
-#' @param filename Name in quotes to export plot in pdf format
-#' @param ncells Number of cell types in annotated seurat object
-#' @param celltypelabels Vector containing labels for ncells
 #' @param cellcolors vector of color names or codes for each cell type
 #' @param seuratDEGS Exact output from Seurat::FindAllMarkers function. Must contain a 'gene' column
 #' @param LRdatabase Table of ligand-receptor pairs
@@ -120,8 +115,8 @@ PairsPlot <- function(seuratDEGS, LRdatabase, cellcolors, subsetgenes=seuratDEGS
   #subsetgenes: subset of genes to create ligand-receptor pairs matix with
 
   # create a matrix with the fold change values from SEURAT output using reshape library
-  ncells <- length(unique(seuratDEGS$cluster)) #number of distinct cell types in SEURAT object
-  celltypelabels <- unique(seuratDEGS$cluster) #save names as vector of strings
+  ncells <- as.numeric(length(unique(seuratDEGS$cluster))) #number of distinct cell types in SEURAT object
+  celltypelabels <- as.character(unique(seuratDEGS$cluster))
 
   if(length(cellcolors) == ncells){
 

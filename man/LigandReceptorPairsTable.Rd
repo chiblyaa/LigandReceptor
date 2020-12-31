@@ -7,19 +7,9 @@ This function combines gene expression output data from SEURAT with
 a database of Ligand-Receptor pairs to identify potential
 cell-cell interactions in a given dataset.}
 \usage{
-LigandReceptorPairsTable(
-  ncells,
-  celltypelabels,
-  seuratDEGS,
-  LRdatabase,
-  subsetgenes = seuratDEGS$gene
-)
+LigandReceptorPairsTable(seuratDEGS, LRdatabase, subsetgenes = seuratDEGS$gene)
 }
 \arguments{
-\item{ncells}{Number of cell types in annotated seurat object}
-
-\item{celltypelabels}{Vector containing labels for ncells}
-
 \item{seuratDEGS}{Exact output from Seurat::FindAllMarkers function. Must contain a 'gene' column}
 
 \item{LRdatabase}{Table of ligand-receptor pairs}
