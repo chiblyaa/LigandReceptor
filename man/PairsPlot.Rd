@@ -9,29 +9,20 @@ cell-cell interactions in a given dataset and uses the circlize package
 to produce a chord plot representative of those interactions}
 \usage{
 PairsPlot(
-  filename,
-  ncells,
-  celltypelabels,
-  cellcolors,
   seuratDEGS,
   LRdatabase,
+  cellcolors,
   subsetgenes = seuratDEGS$gene,
   from = celltypelabels,
   to = celltypelabels
 )
 }
 \arguments{
-\item{filename}{Name in quotes to export plot in pdf format}
-
-\item{ncells}{Number of cell types in annotated seurat object}
-
-\item{celltypelabels}{Vector containing labels for ncells}
-
-\item{cellcolors}{vector of color names or codes for each cell type}
-
 \item{seuratDEGS}{Exact output from Seurat::FindAllMarkers function. Must contain a 'gene' column}
 
 \item{LRdatabase}{Table of ligand-receptor pairs}
+
+\item{cellcolors}{vector of color names or codes for each cell type}
 
 \item{subsetgenes}{Vector containing a subset of genes}
 

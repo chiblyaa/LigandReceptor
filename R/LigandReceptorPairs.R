@@ -3,8 +3,6 @@
 #' a database of Ligand-Receptor pairs to identify potential
 #' cell-cell interactions in a given dataset.
 #' @import dplyr circlize reshape2
-#' @param ncells Number of cell types in annotated seurat object
-#' @param celltypelabels Vector containing labels for ncells
 #' @param seuratDEGS Exact output from Seurat::FindAllMarkers function. Must contain a 'gene' column
 #' @param LRdatabase Table of ligand-receptor pairs
 #' @param subsetgenes Vector containing a subset of genes
@@ -103,9 +101,6 @@ LigandReceptorPairsTable <- function(seuratDEGS, LRdatabase, subsetgenes = seura
 #' to produce a chord plot representative of those interactions
 #'
 #' @import dplyr circlize reshape2
-#' @param filename Name in quotes to export plot in pdf format
-#' @param ncells Number of cell types in annotated seurat object
-#' @param celltypelabels Vector containing labels for ncells
 #' @param cellcolors vector of color names or codes for each cell type
 #' @param seuratDEGS Exact output from Seurat::FindAllMarkers function. Must contain a 'gene' column
 #' @param LRdatabase Table of ligand-receptor pairs
